@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Check passwords against API of compromised passwords}
   spec.description   = %q{Check passwords against API of compromised passwords}
-  spec.homepage      = "https://github.com/jash/hibp_check"
+  spec.homepage      = "https://github.com/k3integrations/hibp_check"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.

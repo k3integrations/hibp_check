@@ -4,6 +4,11 @@ This ruby gem is used to check passwords against a list of previously
 compromised passwords that others have used.  It is intended to be extremely
 light-weight, not depending on anything except Ruby's core libraries.
 
+For more information about the api, see:
+[https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/](https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/)
+
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -19,6 +24,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install hibp_check
+
 
 ## Usage
 
@@ -50,15 +56,17 @@ be used in the http get request.  For example:
 hc = HibpCheck.new(open_timeout: 1, read_timeout: 1, ssl_timeout: 1)
 hc.password_used 'sekrit1'
 # Be prepared to rescue timeout errors
+```
 
 You can also inspect the request, response and results of the API request with
 the following variables which are set on the object:
-  * params - The hash of params given when the object was initialized
-  * prefix - the first 5 characters of the SHA1 hash
-  * remainder - the remaining characters of the SHA1 hash
-  * request - the Net::HTTP::Get request that was sent
-  * response - the Net::HTTPResponse
-  * hashes - the response of remainder hashes from the API, with counts
+  * `params` - The hash of params given when the object was initialized
+  * `prefix` - the first 5 characters of the SHA1 hash
+  * `remainder` - the remaining characters of the SHA1 hash
+  * `request` - the Net::HTTP::Get request that was sent
+  * `response` - the response, usually Net::HTTPOK
+  * `hashes` - the response of remainder hashes from the API, with counts
+
 
 ## Development
 
@@ -78,15 +86,13 @@ To run tests, try this:
 # After cloning the repo
 ./bin/setup
 
-bundle
-
 rspec spec
 ```
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-https://github.com/jash/hibp_check. This project is intended to be a safe,
+https://github.com/k3integrations/hibp_check. This project is intended to be a safe,
 welcoming space for collaboration, and contributors are expected to adhere to
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
@@ -99,4 +105,4 @@ The gem is available as open source under the terms of the
 
 Everyone interacting in the HibpCheck project’s codebases, issue trackers, chat
 rooms and mailing lists is expected to follow the
-[code of conduct](https://github.com/jash/hibp_check/blob/master/CODE_OF_CONDUCT.md).
+[code of conduct](https://github.com/k3integrations/hibp_check/blob/master/CODE_OF_CONDUCT.md).
