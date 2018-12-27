@@ -1,8 +1,8 @@
 # HibpCheck
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hibp_check`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This ruby gem is used to check passwords against a list of previously
+compromised passwords that others have used.  It is intended to be extremely
+light-weight, not depending on anything except Ruby's core libraries.
 
 ## Installation
 
@@ -22,22 +22,81 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Using this is real easy.  Here's an example:
+
+```ruby
+# Call directly with a raw password
+HibpCheck.new.password_used 'sekrit1'
+# Returns: 33
+
+# Call with a sha1 hash (for 'HelloWorld1')
+HibpCheck.new.sha1_used '1924db611f8ae26075212fc9a0d2802e2bf17d3b'
+# Returns: 46
+
+HibpCheck.new.password_used 'something.never.seen.before.123.abc.xyz.def.ghi'
+# Returns: 0
+```
+
+Those methods will return one of:
+  * An integer, showing how many times that password has been compromised
+  * Zero, if not found to have been compromised
+  * nil or an error raised: if some problem occurred
+
+You can pass a hash of Net::HTTP options when initializing the object that will
+be used in the http get request.  For example:
+
+```ruby
+# Call with timeouts
+hc = HibpCheck.new(open_timeout: 1, read_timeout: 1, ssl_timeout: 1)
+hc.password_used 'sekrit1'
+# Be prepared to rescue timeout errors
+
+You can also inspect the request, response and results of the API request with
+the following variables which are set on the object:
+  * params - The hash of params given when the object was initialized
+  * prefix - the first 5 characters of the SHA1 hash
+  * remainder - the remaining characters of the SHA1 hash
+  * request - the Net::HTTP::Get request that was sent
+  * response - the Net::HTTPResponse
+  * hashes - the response of remainder hashes from the API, with counts
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake spec` to run the tests. You can also run `bin/console` for an interactive
+prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
+To release a new version, update the version number in `version.rb`, and then
+run `bundle exec rake release`, which will create a git tag for the version,
+push git commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
+
+To run tests, try this:
+
+```ruby
+# After cloning the repo
+./bin/setup
+
+bundle
+
+rspec spec
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hibp_check. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/jash/hibp_check. This project is intended to be a safe,
+welcoming space for collaboration, and contributors are expected to adhere to
+the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the
+[MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
-Everyone interacting in the HibpCheck project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/hibp_check/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the HibpCheck project’s codebases, issue trackers, chat
+rooms and mailing lists is expected to follow the
+[code of conduct](https://github.com/jash/hibp_check/blob/master/CODE_OF_CONDUCT.md).
